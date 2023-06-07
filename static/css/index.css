@@ -77,6 +77,7 @@ h1 > .special-button {
   color: #fff;
   background: #2b4aba;
   opacity: 0;
+  line-height: 1;
   text-decoration: none;
   transition: opacity 0.5s ease-in-out;
 }
