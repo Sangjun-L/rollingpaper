@@ -1,0 +1,131 @@
+h1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+  font-family: Jua, sans-serif;
+  font-size: 32px;
+}
+
+h1 > .special-button {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 32px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.members {
+  padding: 40px 0;
+}
+
+.members > h2 {
+  margin-bottom: 20px;
+  font-family: Jua, sans-serif;
+  font-size: 24px;
+}
+
+.members-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.members-list-card {
+  position: relative;
+  width: 100%;
+  height: 0;
+  background: #ddd;
+  padding-bottom: 100%;
+  border-radius: 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  overflow: hidden;
+}
+
+.members-list-card > .member-info {
+  position: absolute;
+  width: calc(100% - 20px - 20px);
+  left: 50%;
+  bottom: -40px;
+  transform: translateX(-50%);
+  z-index: 2;
+  transition: bottom 0.3s ease-in-out;
+}
+
+.members-list-card > .member-info > .member-role {
+  font-size: 14px;
+  color: #fff;
+}
+
+.members-list-card > .member-info > .member-name {
+  font-size: 32px;
+  font-weight: 500;
+  color: #fff;
+  margin-top: 8px;
+}
+
+.members-list-card > .member-info > .member-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  margin-top: 20px;
+  border-radius: 8px;
+  color: #fff;
+  background: #2b4aba;
+  opacity: 0;
+  text-decoration: none;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.members-list-card > .black-cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(18, 18, 18, 0.2);
+  backdrop-filter: blur(0px);
+  z-index: 1;
+  transition: backdrop-filter 0.3s ease-in-out;
+}
+
+.members-list-card > img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+}
+
+.members-list-card:hover > .black-cover {
+  background: rgba(18, 18, 18, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.members-list-card:hover > .member-info {
+  bottom: 20px;
+}
+
+.members-list-card:hover > .member-info > .member-link {
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .members-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 512px) {
+  .members-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
