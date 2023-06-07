@@ -13,12 +13,11 @@ db = client.rolling
 
 @app.route('/')
 def home():
-   return 'This is Home!'
-
-@app.route('/mypage')
-def mypage():
-
    return render_template('index.html')
+
+@app.route('/member/<member_id>')
+def member(member_id):
+   return render_template('member.html')
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)
