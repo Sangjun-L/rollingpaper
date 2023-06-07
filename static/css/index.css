@@ -41,6 +41,7 @@ h1 > .special-button {
   border-radius: 20px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   overflow: hidden;
+  transition: transform 0.3s ease-in-out;
 }
 
 .members-list-card > .member-info {
@@ -99,6 +100,10 @@ h1 > .special-button {
   top: 0;
   left: 0;
   object-fit: cover;
+}
+
+.members-list-card:hover {
+  transform: scale(1.03);
 }
 
 .members-list-card:hover > .black-cover {

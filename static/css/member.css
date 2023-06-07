@@ -1,0 +1,205 @@
+.member-profile {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  margin-top: 40px;
+  padding: 20px;
+  border-radius: 40px;
+  background: #fff;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.member-profile > .member-image {
+  position: relative;
+  width: 100%;
+  height: 0;
+  background: #ddd;
+  padding-bottom: 100%;
+  border-radius: 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  overflow: hidden;
+}
+
+.member-profile > .member-image > img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+}
+
+.member-profile > .member-info > span {
+  display: block;
+  line-height: 1.6rem;
+}
+
+.member-comment {
+  padding: 40px 0;
+}
+
+.member-comment > h2 {
+  font-family: Jua, sans-serif;
+  font-size: 24px;
+}
+
+.member-comment > .member-comment-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-top: 12px;
+}
+
+.member-comment > .member-comment-list > .member-comment-item {
+  position: relative;
+  width: 100%;
+  height: 0;
+  background: #ffff88;
+  padding-bottom: 100%;
+  border-radius: 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  overflow: hidden;
+}
+
+.member-comment > .member-comment-list > .member-comment-item > .inner {
+  position: absolute;
+  width: calc(100% - 20px - 20px);
+  height: calc(100% - 20px - 20px);
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  overflow: hidden;
+}
+
+.member-comment > .member-comment-list > .member-comment-item.write > .inner {
+  text-align: right;
+}
+
+.member-comment > .member-comment-list > .member-comment-item.write input {
+  display: block;
+  width: 100%;
+  height: 32px;
+  margin-bottom: 12px;
+  padding: 4px 0;
+  border: none;
+  border-bottom: 1px solid #444;
+  background: transparent;
+  font-size: 16px;
+}
+
+.member-comment > .member-comment-list > .member-comment-item.write textarea {
+  display: block;
+  width: 100%;
+  height: calc(100% - 64px - 24px - 40px - 12px);
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  resize: none;
+}
+
+.member-comment
+  > .member-comment-list
+  > .member-comment-item.write
+  textarea:focus,
+.member-comment
+  > .member-comment-list
+  > .member-comment-item.write
+  input:focus {
+  outline: none;
+}
+
+.member-comment
+  > .member-comment-list
+  > .member-comment-item.write
+  .write-comment-button {
+  height: 40px;
+  margin-top: 12px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #222;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+  line-height: 0;
+}
+
+.member-comment > .member-comment-list > .member-comment-item .comment-writer {
+  display: block;
+  margin-bottom: 12px;
+  width: 100%;
+  height: 28px;
+}
+
+.member-comment
+  > .member-comment-list
+  > .member-comment-item
+  .comment-contents {
+  display: block;
+  width: 100%;
+  height: calc(100% - 40px);
+  overflow-y: scroll;
+}
+
+.member-comment
+  > .member-comment-list
+  > .member-comment-item
+  .comment-contents::-webkit-scrollbar,
+.member-comment
+  > .member-comment-list
+  > .member-comment-item.write
+  textarea::-webkit-scrollbar {
+  width: 4px;
+  background: transparent;
+}
+
+.member-comment
+  > .member-comment-list
+  > .member-comment-item
+  .comment-contents::-webkit-scrollbar-thumb,
+.member-comment
+  > .member-comment-list
+  > .member-comment-item.write
+  textarea::-webkit-scrollbar-thumb {
+  background: #000;
+}
+
+.member-comment
+  > .member-comment-list
+  > .member-comment-item
+  .comment-contents::-webkit-scrollbar-track,
+.member-comment
+  > .member-comment-list
+  > .member-comment-item.write
+  textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (max-width: 1024px) {
+  .member-profile,
+  .member-comment > .member-comment-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .member-profile,
+  .member-comment > .member-comment-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .member-profile {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 40px;
+    padding: 0;
+    border-radius: 0;
+    background: #fff;
+    box-shadow: none;
+  }
+}
