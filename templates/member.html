@@ -5,42 +5,115 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- 시간 처리 Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <link rel="stylesheet" href="../static/css/global.css" />
     <link rel="stylesheet" href="../static/css/member.css" />
     <title>Member</title>
-  </head>
-  <body>
-    <div class="wrap">
-      <section class="member-profile">
-        <h2 class="hidden">팀원 누구누구의 프로필</h2>
-        <div class="member-image">
-          <img
-            src="https://images.unsplash.com/photo-1603575448878-868a20723f5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-            alt="member name"
-          />
-        </div>
-        <div class="member-info">
-          <span>
+    <script>
+      $(document).ready(function () {
+        get_member();
+        get_rolling();
+      });
+
+      // URL에서 멤버 아이디 가져오기
+      function getMemberIdFromURL() {
+        return location.href.split('/member/')[1];
+      }
+
+      function get_member() {
+        fetch(`/api/member/${getMemberIdFromURL()}`)
+          .then((res) => res.json())
+          .then((data) => {
+            const { result, data: member } = data;
+            if (result !== 'success') {
+              alert(data.message);
+              history.back();
+              return;
+            }
+            $('#member-info').empty();
+            const html = `
+            <span>
             안녕하세요! 🙌 <br />
-            알콩콩달콩콩 팀원 누구누구입니다.
+            알콩콩달콩콩 ${member.role === 'leader' ? '팀장' : '팀원'} ${
+              member.name
+            } 누구누구입니다.
           </span>
-          <span>어느시에 살고있어요.</span>
-          <span>제 MBTI는 INFP에요.</span>
-          <span>저는 쉬는 날엔 이거저거를 해요.</span>
+          <span>${member.location}에 살고있어요.</span>
+          <span>제 MBTI는 ${member.mbti}에요.</span>
+          <span>저는 쉬는 날엔 ${member.hobby.join(', ')} 해요.</span>
           <span
             >제 GitHub는
-            <a href="https://github.com/계정" target="_blank"
-              >https://github.com/계정</a
-            >입니다.</span
+            <a href="https://github.com/${member.memberId}" target="_blank"
+              >여기</a
+            >를 눌러주세요.</span
           >
           <span>모두들 잘 부탁드려요.</span>
-        </div>
-      </section>
-      <section class="member-comment">
-        <h2>이 팀원에게 하고 싶은 말...</h2>
-        <ul class="member-comment-list">
-          <li class="member-comment-item write">
-            <div class="inner">
+          <span>마지막으로 제가 즐겨 듣는 노래 듣고 가세요.</span>
+            `;
+            $('#member-info').append(html);
+          });
+      }
+
+      function make_rolling() {
+        const now = moment();
+        const commentWriter = $.trim($('#comment-writer').val());
+        const commentPw = $('#comment-password').val();
+        const commentContents = $.trim($('#comment-contents').val()).replace(
+          /(?:\r\n|\r|\n)/g,
+          '<br/>'
+        );
+
+        if (!commentWriter) {
+          return alert('작성자명을 입력해주세요.');
+        }
+
+        if (!commentPw) {
+          return alert('비밀번호를 입력해주세요.');
+        }
+
+        if (commentPw.match(/\s/g)) {
+          return alert('비밀번호에는 공백이 있으면 안 돼요!');
+        }
+
+        if (!commentContents) {
+          return alert('할 말을 적어주세요.');
+        }
+
+        const rolling = {
+          memberId: getMemberIdFromURL(),
+          name: commentWriter,
+          password: commentPw,
+          comment: commentContents,
+          date: now.format('YYYY-MM-DD HH:mm:ss'),
+        };
+
+        const formData = new FormData();
+        Object.entries(rolling).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+
+        fetch('/api/rollingpaper', { method: 'POST', body: formData })
+          .then((res) => res.json())
+          .then((data) => {
+            get_rolling();
+          });
+      }
+      function get_rolling() {
+        fetch(`/api/rollingpaper/${getMemberIdFromURL()}`, {
+          method: 'GET',
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            const { result, list } = data;
+            if (result !== 'success') {
+              alert(data.message);
+              return;
+            }
+            $('#member-rollin-list').empty();
+            const writeHtml = `
+            <li class="member-comment-item write">
+            <div class="inner" id="write_comment">
               <input
                 type="text"
                 name="작성자명"
@@ -59,43 +132,84 @@
                 id="comment-contents"
                 placeholder="할 말을 적어주세요."
               ></textarea>
-              <button class="write-comment-button">다 적었어요.</button>
+              <button onclick="make_rolling()" class="write-comment-button">
+                다 적었어요.
+              </button>
             </div>
           </li>
-          <li class="member-comment-item">
-            <div class="inner">
-              <span class="comment-writer">작성자</span>
-              <span class="comment-contents">작성 내용</span>
+            `;
+            $('#member-rollin-list').append(writeHtml);
+            list.forEach((rolling) => {
+              const html = `
+              <li class="member-comment-item">
+              <div class="inner">
+              <span class="comment-writer">${rolling.name}</span>
+              <span class="comment-contents">${rolling.comment}</span>
+              <span class="comment-date">${moment(rolling.date).format(
+                'YYYY년 MM월 DD일  HH시mm분'
+              )}</span>
             </div>
-          </li>
-          <li class="member-comment-item">
-            <div class="inner">
-              <span class="comment-writer">작성자</span>
-              <span class="comment-contents">작성 내용</span>
-            </div>
-          </li>
-          <li class="member-comment-item">
-            <div class="inner">
-              <span class="comment-writer">작성자</span>
-              <span class="comment-contents">작성 내용</span>
-            </div>
-          </li>
-          <li class="member-comment-item">
-            <div class="inner">
-              <span class="comment-writer">작성자</span>
-              <span class="comment-contents">작성 내용</span>
-            </div>
-          </li>
-          <li class="member-comment-item">
-            <div class="inner">
-              <span class="comment-writer">작성자</span>
-              <span class="comment-contents">작성 내용</span>
-            </div>
-          </li>
-          <li class="member-comment-item">
-            <div class="inner">
-              <span class="comment-writer">작성자</span>
-              <span class="comment-contents">작성 내용</span>
+            </li>
+              `;
+              $('#member-rollin-list').append(html);
+            });
+          });
+      }
+    </script>
+  </head>
+  <body>
+    <div class="wrap">
+      <section class="member-profile">
+        <h2 class="hidden">팀원 누구누구의 프로필</h2>
+        <div class="member-image">
+          <img
+            src="https://images.unsplash.com/photo-1603575448878-868a20723f5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+            alt="member name"
+          />
+        </div>
+        <div class="member-info" id="member-info">
+          <span>
+            안녕하세요! 🙌 <br />
+            알콩콩달콩콩 팀원 누구누구입니다.
+          </span>
+          <span>어느시에 살고있어요.</span>
+          <span>제 MBTI는 INFP에요.</span>
+          <span>저는 쉬는 날엔 이거저거를 해요.</span>
+          <span
+            >제 GitHub는
+            <a href="https://github.com/계정" target="_blank"
+              >https://github.com/계정</a
+            >입니다.</span
+          >
+          <span>모두들 잘 부탁드려요.</span>
+        </div>
+      </section>
+      <section class="member-comment">
+        <h2>이 팀원에게 하고 싶은 말...</h2>
+        <ul class="member-comment-list" id="member-rollin-list">
+          <li class="member-comment-item write">
+            <div class="inner" id="write_comment">
+              <input
+                type="text"
+                name="작성자명"
+                id="comment-writer"
+                placeholder="작성자명을 적어주세요."
+                maxlength="8"
+              />
+              <input
+                type="password"
+                name="작성 비밀번호"
+                id="comment-password"
+                placeholder="비밀번호를 적어주세요."
+              />
+              <textarea
+                name="작성 내용"
+                id="comment-contents"
+                placeholder="할 말을 적어주세요."
+              ></textarea>
+              <button onclick="make_rolling()" class="write-comment-button">
+                다 적었어요.
+              </button>
             </div>
           </li>
         </ul>

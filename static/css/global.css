@@ -108,7 +108,7 @@ body {
     #dd00f3,
     #dd00f3
   );
-  background-size: 200% 200%;
+  background-size: 500% 500%;
 
   -webkit-animation: rainbow 3s ease infinite;
   -z-animation: rainbow 3s ease infinite;
