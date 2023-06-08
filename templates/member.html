@@ -10,7 +10,6 @@
     <script src="../static/js/ggamchingMode.js"></script>
     <link rel="stylesheet" href="../static/css/global.css" />
     <link rel="stylesheet" href="../static/css/member.css" />
-    <!-- 웹종반 강의에서 이게 부트스트랩을 가져올 때 써야하는 코드라고 하던데 만약 잘못한 거면...죄송합니다... -->
 
     <title>Member</title>
     <script>
@@ -22,7 +21,7 @@
 
       // URL에서 멤버 아이디 가져오기
       function getMemberIdFromURL() {
-        return location.href.split('/member/')[1];
+        return location.href.split("/member/")[1];
       }
 
       function get_member() {
@@ -30,36 +29,31 @@
           .then((res) => res.json())
           .then((data) => {
             const { result, data: member } = data;
-            if (result !== 'success') {
+            if (result !== "success") {
               alert(data.message);
               history.back();
               return;
             }
-
-            document.title = `${member.role === 'leader' ? '팀장' : '팀원'} ${
-              member.name
-            } - ⭐알콩콩~! 달콩콩~!`;
-
-            $('#member-image').empty();
+            $("#member-image").empty();
             const imageTag = `
             <img
             src="${member.img}"
             alt="${member.name}"
           />
             `;
-            $('#member-image').append(imageTag);
-            $('#member-info').empty();
+            $("#member-image").append(imageTag);
+            $("#member-info").empty();
             const html = `
           <span>⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐❤️⭐❤️⭐</span>
           <span>
             안녕하세요! 🙌 <br />
-            ⭐알콩콩~달콩콩~💕 ${member.role === 'leader' ? '팀장' : '팀원'} ${
+            ⭐알콩콩~달콩콩~💕 ${member.role === "leader" ? "팀장" : "팀원"} ${
               member.name
             }입니다.
           </span>
           <span>저는 ${member.location}에 살고있어요.</span>
           <span>제 MBTI는 ${member.mbti}입니다.</span>
-          <span>쉬는 날엔 ${member.hobby.join(', ')}를 즐겨요.</span>
+          <span>쉬는 날엔 ${member.hobby.join(", ")}를 즐겨요.</span>
           <span
             >제 GitHub는
             <a href="https://github.com/${member.memberId}" target="_blank"
@@ -74,48 +68,61 @@
           }" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
           <p>⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐❤️⭐❤️⭐</p>
             `;
-            $('#member-info').append(html);
+            $("#member-info").append(html);
           });
       }
 
-      // 수정, 삭제 아이콘 유머 버튼
-      function make_delete_fun() {
-        alert('또 속으셨습니다. 지나간 건 되돌릴 수 없습니다.');
-      }
+      async function del_rolling(commentId) {
+        const password = await prompt("삭제하시려면 비밀번호를 입력해주세요.");
+        const formData = new FormData();
 
-      function make_change_fun() {
-        alert('훼이크입니다. 한 번 뱉은 말은 주워 담을 수 없습니다.');
+        formData.append("commentId", commentId);
+        formData.append("password", password);
+        fetch(`/api/rollingpaper/${getMemberIdFromURL()}`, {
+          method: "DELETE",
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            const { result, message } = data;
+            if (result !== "success") {
+              alert(message);
+              return;
+            }
+            alert(message);
+            get_rolling();
+          });
       }
 
       function make_rolling() {
-        const commentWriter = $.trim($('#comment-writer').val());
-        const commentPw = $('#comment-password').val();
-        const commentContents = $.trim($('#comment-contents').val()).replace(
+        const commentWriter = $.trim($("#comment-writer").val());
+        const commentPw = $("#comment-password").val();
+        const commentContents = $.trim($("#comment-contents").val()).replace(
           /(?:\r\n|\r|\n)/g,
-          '<br/>'
+          "<br/>"
         );
 
         if (!commentWriter) {
-          return alert('작성자명을 입력해주세요.');
+          return alert("작성자명을 입력해주세요.");
         }
 
         if (!commentPw) {
-          return alert('비밀번호를 입력해주세요.');
+          return alert("비밀번호를 입력해주세요.");
         }
 
         if (commentPw.match(/\s/g)) {
-          return alert('비밀번호에는 공백이 있으면 안 돼요!');
+          return alert("비밀번호에는 공백이 있으면 안 돼요!");
         }
 
         if (!commentContents) {
-          return alert('하고 싶은 말을 적어주세요.');
+          return alert("하고 싶은 말을 적어주세요.");
         }
 
         const rolling = {
           name: commentWriter,
           password: commentPw,
           comment: commentContents,
-          date: moment().format('YYYY-MM-DD HH:mm:ss'),
+          date: moment().format("YYYY-MM-DD HH:mm:ss"),
         };
 
         const formData = new FormData();
@@ -123,27 +130,24 @@
           formData.append(key, value);
         });
 
-        fetch(`/api/rollingpaper/${getMemberIdFromURL()}`, {
-          method: 'POST',
-          body: formData,
-        })
+        fetch("/api/rollingpaper", { method: "POST", body: formData })
           .then((res) => res.json())
           .then((data) => {
             get_rolling();
           });
       }
       function get_rolling() {
-        fetch(`/api/rollingpaper/${getMemberIdFromURL()}`, {
-          method: 'GET',
+        fetch(`/api/rollingpaper/",${getMemberIdFromURL()}`, {
+          method: "GET",
         })
           .then((res) => res.json())
           .then((data) => {
             const { result, list } = data;
-            if (result !== 'success') {
+            if (result !== "success") {
               alert(data.message);
               return;
             }
-            $('#member-rollin-list').empty();
+            $("#member-rollin-list").empty();
             const writeHtml = `
             <li class="member-comment-item write">
             <div class="inner" id="write_comment">
@@ -168,11 +172,11 @@
               <button onclick="make_rolling()" class="write-comment-button">
                 다 적었어요.
               </button>
-              
+
             </div>
           </li>
             `;
-            $('#member-rollin-list').append(writeHtml);
+            $("#member-rollin-list").append(writeHtml);
             list.forEach((rolling) => {
               const html = `
               <li class="member-comment-item">
@@ -180,19 +184,18 @@
               <span class="comment-writer">${rolling.name}</span>
               <span class="comment-contents">${rolling.comment}</span>
               <span class="comment-date">${moment(rolling.date).format(
-                'YYYY년 MM월 DD일  HH시mm분'
+                "YYYY년 MM월 DD일  HH시mm분"
               )}</span>
-              
+
             </div>
-            <button onclick="make_delete_fun()" class="delete-comment-button">
+            <button onclick="del_rolling(${
+              rolling.commentId
+            })" class="delete-comment-button">
               🗑️
-              </button>
-              <button onclick="make_change_fun()" class="change-comment-button">
-              ✏️
               </button>
             </li>
               `;
-              $('#member-rollin-list').append(html);
+              $("#member-rollin-list").append(html);
             });
           });
       }
