@@ -34,12 +34,20 @@
               history.back();
               return;
             }
+            $('#member-image').empty();
+            const imageTag = `
+            <img
+            src="${member.img}"
+            alt="${member.name}"
+          />
+            `;
+            $('#member-image').append(imageTag);
             $('#member-info').empty();
             const html = `
           <span>⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐❤️⭐❤️⭐</span>
           <span>
             안녕하세요! 🙌 <br />
-            ⭐알콩콩~달콩콩~💕 팀원 ${member.name}입니다.
+            ⭐알콩콩~달콩콩~💕 ${member.role === 'leader' ? '팀장' : '팀원'} ${member.name}입니다.
           </span>
           <span>저는 ${member.location}에 살고있어요.</span>
           <span>제 MBTI는 ${member.mbti}입니다.</span>
@@ -70,7 +78,6 @@
       
 
       function make_rolling() {
-        const now = moment();
         const commentWriter = $.trim($('#comment-writer').val());
         const commentPw = $('#comment-password').val();
         const commentContents = $.trim($('#comment-contents').val()).replace(
@@ -99,7 +106,7 @@
           name: commentWriter,
           password: commentPw,
           comment: commentContents,
-          date: now.format('YYYY-MM-DD HH:mm:ss'),
+          date: moment().format('YYYY-MM-DD HH:mm:ss'),
         };
 
         const formData = new FormData();
@@ -183,7 +190,7 @@
     <div class="wrap">
       <section class="member-profile">
         <h2 class="hidden">팀원 누구누구의 프로필</h2>
-        <div class="member-image">
+        <div class="member-image" id="member-image">
           <img
             src="https://images.unsplash.com/photo-1603575448878-868a20723f5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
             alt="member name"
