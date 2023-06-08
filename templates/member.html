@@ -112,7 +112,6 @@
         }
 
         const rolling = {
-          memberId: getMemberIdFromURL(),
           name: commentWriter,
           password: commentPw,
           comment: commentContents,
@@ -124,7 +123,10 @@
           formData.append(key, value);
         });
 
-        fetch('/api/rollingpaper', { method: 'POST', body: formData })
+        fetch(`/api/rollingpaper/${getMemberIdFromURL()}`, {
+          method: 'POST',
+          body: formData,
+        })
           .then((res) => res.json())
           .then((data) => {
             get_rolling();
