@@ -1,19 +1,41 @@
-h1 {
+.title {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
   margin-top: 40px;
-  font-family: Jua, sans-serif;
-  font-size: 32px;
 }
 
-h1 > .special-button {
+.title > .special-button {
   border: 0;
   margin: 0;
   padding: 0;
   font-size: 32px;
   background: transparent;
   cursor: pointer;
+}
+
+.title > .event-message {
+  position: absolute;
+  left: 100px;
+  top: -28px;
+  display: block;
+  padding: 8px;
+  background: #fdfd96;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.title > .special-button:hover ~ .event-message {
+  opacity: 1;
+}
+
+h1 {
+  display: inline-block;
+  font-family: Jua, sans-serif;
+  font-size: 32px;
 }
 
 .members {
