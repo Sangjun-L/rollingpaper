@@ -139,17 +139,14 @@
   padding: 0px;
   gap: 10px;
   font-size: 20px;
-
   background-color: transparent;
   border: none;
-  font-weight: bold;
-
   position: absolute;
   width: 32px;
   height: 32px;
-  left: 292px;
+  right: 50px;
   top: 10px;
-  position: absolute;
+  cursor: pointer;
 }
 
 /* 삭제 버튼. 버튼 만들고 alert이랑 연결만 해놓은 상태입니다.*/
@@ -157,24 +154,21 @@
   > .member-comment-list
   > .member-comment-item
   .delete-comment-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 0px;
   gap: 10px;
-  font-size: 23px;
-
-  background-color: transparent;
-  border: none;
-  font-weight: bold;
-
-  position: absolute;
   width: 32px;
   height: 32px;
-  left: 330px;
-  top: 10px;
-  position: absolute;
+  padding: 0px;
+  font-size: 23px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .member-comment > .member-comment-list > .member-comment-item .comment-writer {
