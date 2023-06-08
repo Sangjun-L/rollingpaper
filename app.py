@@ -39,12 +39,12 @@ def get_member(member_id):
     return jsonify({'result': 'success', 'data': member_info})
 
 
-@app.route('/api/rollingpaper', methods=["POST"])
-def make_rolling():
+@app.route('/api/rollingpaper/<member_id>', methods=["POST"])
+def make_rolling(member_id):
     rolling_list = list(db.comment.find({}, {'_id': False}))
     count = len(rolling_list) + 1
     doc = {
-        'memberId': request.form['memberId'],
+        'memberId': member_id,
         'commentId': count,
         'name': request.form['name'],
         'password': request.form['password'],
