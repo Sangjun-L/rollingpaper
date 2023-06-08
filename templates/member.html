@@ -47,7 +47,9 @@
           <span>⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐❤️⭐❤️⭐</span>
           <span>
             안녕하세요! 🙌 <br />
-            ⭐알콩콩~달콩콩~💕 ${member.role === 'leader' ? '팀장' : '팀원'} ${member.name}입니다.
+            ⭐알콩콩~달콩콩~💕 ${member.role === 'leader' ? '팀장' : '팀원'} ${
+              member.name
+            }입니다.
           </span>
           <span>저는 ${member.location}에 살고있어요.</span>
           <span>제 MBTI는 ${member.mbti}입니다.</span>
@@ -59,6 +61,7 @@
             >를 눌러주시면 볼 수 있어요.</span
           >
           <span>모두들 잘 부탁드려요!😍</span>
+          <br/>
           <span>마지막으로 요즘 제가 즐겨 듣는 노래에요. 구경하시면서 들어주세요!</span>
           <iframe width="560" height="315" src="https://www.youtube.com/embed/byARQ2GK8og" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
           <p>⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐❤️⭐❤️⭐</p>
@@ -68,14 +71,13 @@
       }
 
       // 수정, 삭제 아이콘 유머 버튼
-      function make_delete_fun(){
-      alert('또 속으셨습니다. 지나간 건 되돌릴 수 없습니다.');
+      function make_delete_fun() {
+        alert('또 속으셨습니다. 지나간 건 되돌릴 수 없습니다.');
       }
 
-      function make_change_fun(){
-      alert('훼이크입니다. 한 번 뱉은 말은 주워 담을 수 없습니다.');
+      function make_change_fun() {
+        alert('훼이크입니다. 한 번 뱉은 말은 주워 담을 수 없습니다.');
       }
-      
 
       function make_rolling() {
         const commentWriter = $.trim($('#comment-writer').val());

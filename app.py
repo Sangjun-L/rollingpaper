@@ -27,7 +27,7 @@ def member(member_id):
 @app.route('/api/team', methods=["GET"])
 def member_list():
     all_member = list(db.member.find({}, {'_id': False, 'mbti': False, 'musicURL': False,
-        'location': False, 'location': False, 'hobby': False}).sort('name', 1))
+                                          'location': False, 'location': False, 'hobby': False}).sort('name', 1))
     return jsonify({'result': 'success', 'list': all_member})
 
 
@@ -62,17 +62,19 @@ def get_rolling(member_id):
     return jsonify({'result': 'success', 'list': rolling_list})
 
 # 페이퍼 삭제
+
+
 @app.route('/api/rollingpaper', methods=["DELETE"])
 def del_rolling():
     comment_id = request.form['commentId']
     input_password = request.form['password']
     comment = db.comment.find_one({"commentId": int(comment_id)})
 
-    if comment['password'] == input_password:
-        db.comment.delete_one({"commentId":int(comment_id)})
-        return jsonify({'result': 'success', 'message': '삭제 완료되었습니다.'})
-    else:
-        return jsonify({'result':'fail', 'message':'비밀번호가 다릅니다.'})
+    if comment['password'] != input_password:
+        return jsonify({'result': 'fail', 'message': '비밀번호가 다릅니다.'})
+
+    db.comment.delete_one({"commentId": int(comment_id)})
+    return jsonify({'result': 'success', 'message': '삭제 완료되었습니다.'})
 
 
 if __name__ == '__main__':
