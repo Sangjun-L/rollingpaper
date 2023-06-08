@@ -5,12 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../static/js/ggamchingMode.js"></script>
     <link rel="stylesheet" href="../static/css/global.css" />
     <link rel="stylesheet" href="../static/css/index.css" />
     <title>Home</title>
     <script>
       $(document).ready(function () {
         get_team();
+        isGgamchingMode();
       });
       function get_team() {
         fetch('/api/team')
@@ -45,25 +47,19 @@
             });
           });
       }
-      function dalcongcongMode() {
-        const body = $('body');
-        if (body.hasClass('dalcongcongMode')) {
-          body.removeClass('dalcongcongMode');
-          return;
-        }
-        body.addClass('dalcongcongMode');
-      }
     </script>
   </head>
   <body>
     <div class="wrap">
-      <div class="title">
-        <h1>⭐알콩콩~! 달콩콩~!</h1>
-        <button onclick="dalcongcongMode()" class="special-button">💖</button>
+      <header class="title">
+        <h1><a href="/">⭐알콩콩~! 달콩콩~!</a></h1>
+        <button onclick="setIsGgamchingMode()" class="special-button">
+          💖
+        </button>
         <span class="event-message"
           >하트를 클릭하면 ⭐깜찡이 모드💕를 사용하실 수 있어요!</span
         >
-      </div>
+      </header>
       <section class="members">
         <h2>귀여운 우리⭐알콩콩달콩콩💕의 멤버들입니다.</h2>
         <ul class="members-list" id="members-list">
