@@ -66,11 +66,10 @@ def get_rolling(member_id):
 def del_rolling():
     comment_id = request.form['commentId']
     input_password = request.form['password']
-
-    comment = db.comment.find_one({"commentId":comment_id})
+    comment = db.comment.find_one({"commentId": int(comment_id)})
 
     if comment['password'] == input_password:
-        db.comment.delete_one({"commentId":comment_id})
+        db.comment.delete_one({"commentId":int(comment_id)})
         return jsonify({'result': 'success', 'message': '삭제 완료되었습니다.'})
     else:
         return jsonify({'result':'fail', 'message':'비밀번호가 다릅니다.'})
