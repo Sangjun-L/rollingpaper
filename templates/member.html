@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- 시간 처리 Library -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <link rel="stylesheet" href="../static/css/global.css" />
     <link rel="stylesheet" href="../static/css/member.css" />
+    <!-- 웹종반 강의에서 이게 부트스트랩을 가져올 때 써야하는 코드라고 하던데 만약 잘못한 거면...죄송합니다... -->
+
     <title>Member</title>
     <script>
       $(document).ready(function () {
@@ -41,27 +44,38 @@
             $('#member-image').append(imageTag);
             $('#member-info').empty();
             const html = `
-            <span>
+          <span>⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐❤️⭐❤️⭐</span>
+          <span>
             안녕하세요! 🙌 <br />
-            알콩콩달콩콩 ${member.role === 'leader' ? '팀장' : '팀원'} ${
-              member.name
-            }입니다.
+            ⭐알콩콩~달콩콩~💕 ${member.role === 'leader' ? '팀장' : '팀원'} ${member.name}입니다.
           </span>
-          <span>${member.location}에 살고있어요.</span>
-          <span>제 MBTI는 ${member.mbti}에요.</span>
-          <span>저는 쉬는 날엔 ${member.hobby.join(', ')} 해요.</span>
+          <span>저는 ${member.location}에 살고있어요.</span>
+          <span>제 MBTI는 ${member.mbti}입니다.</span>
+          <span>쉬는 날엔 ${member.hobby.join(', ')}를 즐겨요.</span>
           <span
             >제 GitHub는
             <a href="https://github.com/${member.memberId}" target="_blank"
               >여기</a
-            >를 눌러주세요.</span
+            >를 눌러주시면 볼 수 있어요.</span
           >
-          <span>모두들 잘 부탁드려요.</span>
-          <span>마지막으로 제가 즐겨 듣는 노래 듣고 가세요.</span>
+          <span>모두들 잘 부탁드려요!😍</span>
+          <span>마지막으로 요즘 제가 즐겨 듣는 노래에요. 구경하시면서 들어주세요!</span>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/byARQ2GK8og" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <p>⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐❤️⭐❤️⭐</p>
             `;
             $('#member-info').append(html);
           });
       }
+
+      // 수정, 삭제 아이콘 유머 버튼
+      function make_delete_fun(){
+      alert('또 속으셨습니다. 지나간 건 되돌릴 수 없습니다.');
+      }
+
+      function make_change_fun(){
+      alert('훼이크입니다. 한 번 뱉은 말은 주워 담을 수 없습니다.');
+      }
+      
 
       function make_rolling() {
         const commentWriter = $.trim($('#comment-writer').val());
@@ -84,7 +98,7 @@
         }
 
         if (!commentContents) {
-          return alert('할 말을 적어주세요.');
+          return alert('하고 싶은 말을 적어주세요.');
         }
 
         const rolling = {
@@ -142,6 +156,7 @@
               <button onclick="make_rolling()" class="write-comment-button">
                 다 적었어요.
               </button>
+              
             </div>
           </li>
             `;
@@ -155,7 +170,14 @@
               <span class="comment-date">${moment(rolling.date).format(
                 'YYYY년 MM월 DD일  HH시mm분'
               )}</span>
+              
             </div>
+            <button onclick="make_delete_fun()" class="delete-comment-button">
+              🗑️
+              </button>
+              <button onclick="make_change_fun()" class="change-comment-button">
+              ✏️
+              </button>
             </li>
               `;
               $('#member-rollin-list').append(html);
@@ -172,6 +194,7 @@
           <img src="" alt="멤버 이미지" />
         </div>
         <div class="member-info" id="member-info">
+          <span>⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐⭐❤️⭐❤️⭐❤️⭐</span>
           <span>
             안녕하세요! 🙌 <br />
             알콩콩달콩콩 팀원 누구누구입니다.
@@ -189,7 +212,7 @@
         </div>
       </section>
       <section class="member-comment">
-        <h2>이 팀원에게 하고 싶은 말...</h2>
+        <h2>이 팀원에게 하고 싶은 말...😮</h2>
         <ul class="member-comment-list" id="member-rollin-list">
           <li class="member-comment-item write">
             <div class="inner" id="write_comment">
@@ -200,6 +223,7 @@
                 placeholder="작성자명을 적어주세요."
                 maxlength="8"
               />
+
               <input
                 type="password"
                 name="작성 비밀번호"
@@ -212,7 +236,7 @@
                 placeholder="할 말을 적어주세요."
               ></textarea>
               <button onclick="make_rolling()" class="write-comment-button">
-                다 적었어요.
+                다 적었어요!
               </button>
             </div>
           </li>
