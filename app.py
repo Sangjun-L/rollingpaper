@@ -1,6 +1,7 @@
 import os
 import certifi
 import math
+import uuid
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
@@ -41,11 +42,9 @@ def get_member(member_id):
 
 @app.route('/api/rollingpaper/<member_id>', methods=["POST"])
 def make_rolling(member_id):
-    rolling_list = list(db.comment.find({}, {'_id': False}))
-    count = len(rolling_list) + 1
     doc = {
         'memberId': member_id,
-        'commentId': count,
+        'commentId': str(uuid.uuid4()),
         'name': request.form['name'],
         'password': request.form['password'],
         'comment': request.form['comment'],
@@ -72,12 +71,12 @@ def get_rolling(member_id):
 def del_rolling(member_id):
     comment_id = request.form['commentId']
     input_password = request.form['password']
-    comment = db.comment.find_one({"commentId": int(comment_id)})
+    comment = db.comment.find_one({"commentId": comment_id})
 
     if comment['password'] != input_password:
         return jsonify({'result': 'fail', 'message': '비밀번호가 다릅니다.'})
 
-    db.comment.delete_one({"commentId": int(comment_id)})
+    db.comment.delete_one({"commentId": comment_id})
     return jsonify({'result': 'success', 'message': '삭제 완료되었습니다.'})
 
 
