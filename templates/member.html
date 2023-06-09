@@ -47,6 +47,9 @@
               history.back();
               return;
             }
+            document.title = `${member.role === 'leader' ? '팀장' : '팀원'} ${
+              member.name
+            } - ⭐알콩콩~! 달콩콩~!`;
             $('#member-image').empty();
             const imageTag = `
             <img
