@@ -13,24 +13,23 @@
 
     <title>Member</title>
     <script>
+      let currentPage = 1;
+      let lastPage = 1;
+
       $(document).ready(function () {
         get_member();
         get_rolling();
         isGgamchingMode();
-      });
-
-      let currentPage = 1;
-      let lastPage = 1;
-
-      $(document).scroll(function () {
-        const maxHeight = $(document).height();
-        const currentHeight = $(window).scrollTop() + $(window).height();
-        if (currentPage > lastPage) {
-          return;
-        }
-        if (maxHeight <= currentHeight) {
-          get_rolling(currentPage);
-        }
+        $(document).scroll(function () {
+          const maxHeight = $(document).height();
+          const currentHeight = $(window).scrollTop() + $(window).height();
+          if (currentPage > lastPage) {
+            return;
+          }
+          if (maxHeight <= currentHeight) {
+            get_rolling(currentPage);
+          }
+        });
       });
 
       // URL에서 멤버 아이디 가져오기
@@ -48,6 +47,9 @@
               history.back();
               return;
             }
+            document.title = `${member.role === 'leader' ? '팀장' : '팀원'} ${
+              member.name
+            } - ⭐알콩콩~! 달콩콩~!`;
             $('#member-image').empty();
             const imageTag = `
             <img
@@ -154,8 +156,9 @@
             get_rolling();
           });
       }
-      function get_rolling(page = 1) {
-        fetch(`/api/rollingpaper/${getMemberIdFromURL()}?page=${page}`, {
+
+      function get_rolling(pageNum = 1) {
+        fetch(`/api/rollingpaper/${getMemberIdFromURL()}?page=${pageNum}`, {
           method: 'GET',
         })
           .then((res) => res.json())
@@ -165,7 +168,8 @@
               alert(data.message);
               return;
             }
-            if (page === 1) {
+            if (pageNum === 1) {
+              currentPage = 1;
               lastPage = last_page;
               $('#member-rollin-list').empty();
               const writeHtml = `
@@ -209,16 +213,16 @@
               )}</span>
 
             </div>
-            <button onclick="del_rolling(${
+            <button onclick="del_rolling('${
               rolling.commentId
-            })" class="delete-comment-button">
+            }')" class="delete-comment-button">
               🗑️
               </button>
             </li>
               `;
               $('#member-rollin-list').append(html);
             });
-            currentPage++;
+            currentPage = page + 1;
           });
       }
     </script>
