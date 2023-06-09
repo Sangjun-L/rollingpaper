@@ -1,5 +1,6 @@
 import os
 import certifi
+import math
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
@@ -56,9 +57,15 @@ def make_rolling(member_id):
 
 @app.route('/api/rollingpaper/<member_id>', methods=["GET"])
 def get_rolling(member_id):
+    page = request.args.get('page', 1, type=int)
+    limit = 9
+    if page == 1:
+        limit -= 1
     rolling_list = list(db.comment.find({'memberId': member_id}, {
-                        '_id': False, 'memberId': False, 'password': False}).sort('date', -1))
-    return jsonify({'result': 'success', 'list': rolling_list})
+                        '_id': False, 'memberId': False, 'password': False}).sort('date', -1).skip((page - 1) * limit).limit(limit))
+    tot_count = db.comment.count_documents({})
+    last_page_num = math.ceil(tot_count / limit)
+    return jsonify({'result': 'success', 'list': rolling_list, 'limit': limit, 'page': page, 'last_page': last_page_num})
 
 
 @app.route('/api/rollingpaper/<member_id>', methods=["DELETE"])
