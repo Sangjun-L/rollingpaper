@@ -19,6 +19,20 @@
         isGgamchingMode();
       });
 
+      let currentPage = 1;
+      let lastPage = 1;
+
+      $(document).scroll(function () {
+        const maxHeight = $(document).height();
+        const currentHeight = $(window).scrollTop() + $(window).height();
+        if (currentPage > lastPage) {
+          return;
+        }
+        if (maxHeight <= currentHeight) {
+          get_rolling(currentPage);
+        }
+      });
+
       // URL에서 멤버 아이디 가져오기
       function getMemberIdFromURL() {
         return location.href.split('/member/')[1];
@@ -139,19 +153,21 @@
             get_rolling();
           });
       }
-      function get_rolling() {
-        fetch(`/api/rollingpaper/${getMemberIdFromURL()}`, {
+      function get_rolling(page = 1) {
+        fetch(`/api/rollingpaper/${getMemberIdFromURL()}?page=${page}`, {
           method: 'GET',
         })
           .then((res) => res.json())
           .then((data) => {
-            const { result, list } = data;
+            const { result, list, page, last_page } = data;
             if (result !== 'success') {
               alert(data.message);
               return;
             }
-            $('#member-rollin-list').empty();
-            const writeHtml = `
+            if (page === 1) {
+              lastPage = last_page;
+              $('#member-rollin-list').empty();
+              const writeHtml = `
             <li class="member-comment-item write">
             <div class="inner" id="write_comment">
               <input
@@ -179,7 +195,8 @@
             </div>
           </li>
             `;
-            $('#member-rollin-list').append(writeHtml);
+              $('#member-rollin-list').append(writeHtml);
+            }
             list.forEach((rolling) => {
               const html = `
               <li class="member-comment-item">
@@ -200,6 +217,7 @@
               `;
               $('#member-rollin-list').append(html);
             });
+            currentPage++;
           });
       }
     </script>
