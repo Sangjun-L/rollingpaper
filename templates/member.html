@@ -88,6 +88,7 @@
 
       async function del_rolling(commentId) {
         const password = await prompt('삭제하시려면 비밀번호를 입력해주세요.');
+        if (!password) return;
         const formData = new FormData();
 
         formData.append('commentId', commentId);
