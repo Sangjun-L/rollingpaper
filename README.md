@@ -2,7 +2,7 @@
 
 ### 📅 프로젝트 기간 ( 2023년 6월 7일 ~ 2023년 6월 9일 )
 ### 사이트
-http://rolling.eba-iaepmxpp.ap-northeast-2.elasticbeanstalk.com/
+[알콩콩달콩콩](http://rolling.eba-iaepmxpp.ap-northeast-2.elasticbeanstalk.com/)
 
 
 ## 프로젝트 소개
